@@ -106,6 +106,15 @@ const Dashboard = () => {
           <div className={styles.cardImage}></div>
         </section>
 
+        <section className={styles.cardSection}>
+          <div className={styles.cardText}>
+            <h2>My Progress</h2>
+            <p>View the history of your routines and exercises.</p>
+            <button onClick={() => navigate("/progress")}>Go to Progress</button>
+          </div>
+          <div className={styles.cardImage}></div>
+        </section>
+
         {loading ? (
           <p>Loading routines...</p>
         ) : errorMsg ? (
@@ -160,6 +169,12 @@ const Dashboard = () => {
                               className={styles.smallBtn}
                             >
                               Edit in Editor
+                            </button>
+                            <button
+                              onClick={() => navigate(`/execute?id=${routine.id}`)}
+                              className={styles.smallBtn}
+                            >
+                              Start Routine
                             </button>
                             <button
                               onClick={() => toggleExpand(routine.id)}

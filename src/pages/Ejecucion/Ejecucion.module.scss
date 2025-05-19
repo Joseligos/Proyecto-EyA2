@@ -1,0 +1,130 @@
+.container {
+  background-color: #080016;
+  color: white;
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #4fa3ff;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.exerciseCard {
+  background-color: #1e0055;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: #ffffff;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 6px 0;
+    color: #dddddd;
+
+    strong {
+      color: #4fa3ff;
+    }
+  }
+
+  button {
+    margin-top: 14px;
+    background-color: #4fa3ff;
+    color: #080016;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #347ddb;
+    }
+
+    &:disabled {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+
+  label {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 6px;
+    text-align: left;
+  }
+
+  input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #4fa3ff;
+    background-color: #2a0070;
+    color: white;
+    font-size: 14px;
+
+    &::placeholder {
+      color: #bbb;
+    }
+  }
+}
+
+.restSection {
+  margin-top: 20px;
+  background-color: #2a0070;
+  padding: 16px;
+  border-radius: 8px;
+
+  p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  button {
+    background-color: #ff4f4f;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #d63d3d;
+    }
+  }
+}
+
+.navigation {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.progress {
+  font-size: 14px;
+  color: #bbbbbb;
+}

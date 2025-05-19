@@ -5,6 +5,8 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home/Home";
 import EditorRutina from "../pages/EditorRutina/EditorRutina";
+import Ejecucion from "../pages/Ejecucion/Ejecucion";
+import Progreso from "../pages/Progreso/Progreso";
 
 
 
@@ -15,6 +17,9 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registro />} />
         <Route path="/" element={<Home />} />
+        <Route path="/execute" element={<Ejecucion />} />
+        <Route path="/progress" element={<Progreso />} />
+        
         <Route
   path="/workouts"
   element={
