@@ -1,0 +1,148 @@
+.container {
+  background-color: #080016;
+  color: white;
+  padding: 40px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.cardSection {
+  background-color: #1e0055;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  flex-wrap: wrap;
+}
+
+.cardText {
+  flex: 1;
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: white;
+  }
+
+  p {
+    font-size: 16px;
+    color: #dddddd;
+    margin-bottom: 10px;
+  }
+}
+
+.cardImage {
+  width: 360px;
+  height: 240px;
+  background-color: #ccc;
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+
+.exerciseList {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+
+  .exerciseItem {
+    background-color: #2a0070;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    strong {
+      font-size: 16px;
+    }
+  }
+}
+
+.exerciseSublist {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  border-top: 1px solid #4fa3ff;
+  padding-top: 10px;
+
+  li {
+    margin-bottom: 8px;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: #dddddd;
+    }
+  }
+}
+
+.routineHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.routineNameInput {
+  background-color: #2a0070;
+  color: white;
+  border: 1px solid #4fa3ff;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+
+  &::placeholder {
+    color: #aaa;
+  }
+}
+
+.actionButtons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.smallBtn {
+  background-color: #4fa3ff;
+  color: #080016;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #347ddb;
+  }
+}
+
+.logout {
+  text-align: center;
+  margin-top: 30px;
+
+  button {
+    background-color: #ff4f4f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #d63d3d;
+    }
+  }
+}

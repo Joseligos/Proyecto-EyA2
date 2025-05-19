@@ -1,0 +1,7 @@
+Utilizar este comando
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+luego si el npm run dev
+
+SOLO SI NO FUNCIONA, si funciona el npm run dev no es necesario usarlo
