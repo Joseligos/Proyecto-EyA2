@@ -135,17 +135,13 @@ const Tienda = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
-            <button className={styles.filterbutton}>
-                <Filter size={20} />
-                <span>Filter</span>
-            </button>
             </div>
 
             <div className={styles.categories}>
             {categories.map((category) => (
                 <button
                 key={category.id}
-                className={`styles.categorybutton ${activeCategory === category.id ? "active" : ""}`}
+                className={`${styles.categorybutton} ${activeCategory === category.id ? styles.active : ""}`}
                 onClick={() => setActiveCategory(category.id)}
                 >
                 {category.name}
