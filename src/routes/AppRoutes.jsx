@@ -12,67 +12,25 @@ import Tienda from "../pages/Tienda/Tienda";
 import Carrito from "../pages/Carrito/Carrito";
 import { CartProvider } from "../context/CartContext";
 
-
-
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Rutas públicas */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registro />} />
-
-        {/* Rutas privadas */}
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/workouts"
-          element={
-            <PrivateRoute>
-              <EditorRutina />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/execute"
-          element={
-            <PrivateRoute>
-              <Ejecucion />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/progress"
-          element={
-            <PrivateRoute>
-              <Progreso />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/chat"
-          element={
-            <PrivateRoute>
-              <Chat />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
       <CartProvider>
         <Routes>
+          {/* Rutas públicas */}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registro />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/execute" element={<Ejecucion />} />
-          <Route path="/progress" element={<Progreso />} />
-          
+
+          {/* Rutas privadas */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/workouts"
             element={
@@ -82,10 +40,26 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/dashboard"
+            path="/execute"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <Ejecucion />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/progress"
+            element={
+              <PrivateRoute>
+                <Progreso />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <PrivateRoute>
+                <Chat />
               </PrivateRoute>
             }
           />
