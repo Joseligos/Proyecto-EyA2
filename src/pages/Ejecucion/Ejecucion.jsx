@@ -19,7 +19,8 @@ const Ejecucion = () => {
   const navigate = useNavigate();
 
   const [routine, setRoutine] = useState(null);
-  const [current, setCurrent] = useState(0);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  const [currentSet, setCurrentSet] = useState(1);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [timerRunning, setTimerRunning] = useState(false);
@@ -81,43 +82,56 @@ const Ejecucion = () => {
     setTimerRunning(true);
   };
 
-  const saveCurrentResult = () => {
-    const currentExercise = routine.exercises[current];
-    setResults((prev) => {
-      const updated = [...prev];
-      updated[current] = {
+  const handleCompleteSet = () => {
+    const currentExercise = routine.exercises[currentExerciseIndex];
+    const updated = [...results];
+    const reps = parseInt(repsDone) || 0;
+
+    if (!updated[currentExerciseIndex]) {
+      updated[currentExerciseIndex] = {
         name: currentExercise.name,
         targetReps: currentExercise.reps,
-        actualReps: repsDone || "0",
-        duration: exerciseTimer
+        sets: currentExercise.sets,
+        repsPerSet: [],
+        duration: 0
       };
-      return updated;
-    });
-  };
+    }
 
-  const handleNext = () => {
-    saveCurrentResult();
+    updated[currentExerciseIndex].repsPerSet.push(reps);
+    updated[currentExerciseIndex].duration += exerciseTimer;
 
-    if (current < routine.exercises.length - 1) {
-      setCurrent(current + 1);
+    const setsCompleted = updated[currentExerciseIndex].repsPerSet.length;
+
+    setResults(updated);
+    setExerciseTimer(0);
+    setTimerRunning(false);
+    setRepsDone("");
+
+    if (setsCompleted < currentExercise.sets) {
       setInRest(true);
-      setRestTimer(300);
-      setTimerRunning(false);
-      setExerciseTimer(0);
-      setRepsDone("");
+      setRestTimer(60); // 1 minuto de descanso
+      setCurrentSet(currentSet + 1);
     } else {
-      handleFinishRoutine();
+      // ejercicio terminado
+      updated[currentExerciseIndex].totalReps = updated[currentExerciseIndex].repsPerSet.reduce((a, b) => a + b, 0);
+
+      if (currentExerciseIndex < routine.exercises.length - 1) {
+        setCurrentExerciseIndex(currentExerciseIndex + 1);
+        setCurrentSet(1);
+      } else {
+        handleFinishRoutine(updated); // rutina finalizada
+      }
     }
   };
 
-  const handleFinishRoutine = async () => {
+  const handleFinishRoutine = async (finalResults) => {
     try {
       const ref = collection(db, "users", user.uid, "progress");
       await addDoc(ref, {
         routineId,
         routineName: routine.name,
         timestamp: Timestamp.now(),
-        results
+        results: finalResults
       });
       navigate("/dashboard");
     } catch (error) {
@@ -125,20 +139,8 @@ const Ejecucion = () => {
     }
   };
 
-  const handlePrev = () => {
-    if (current > 0) {
-      setCurrent(current - 1);
-      setTimerRunning(false);
-      setExerciseTimer(0);
-      setInRest(false);
-      setRepsDone(results[current - 1]?.actualReps || "");
-    }
-  };
-
   const formatTime = (sec) => {
-    const m = Math.floor(sec / 60)
-      .toString()
-      .padStart(2, "0");
+    const m = Math.floor(sec / 60).toString().padStart(2, "0");
     const s = (sec % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
@@ -148,53 +150,63 @@ const Ejecucion = () => {
   if (errorMsg) return <p style={{ color: "red", textAlign: "center" }}>{errorMsg}</p>;
   if (!routine) return null;
 
-  const exercise = routine.exercises[current];
-  const isLast = current === routine.exercises.length - 1;
+  const exercise = routine.exercises[currentExerciseIndex];
 
   return (
     <>
       <Header />
       <div className={styles.container}>
-        <h1 className={styles.title}>Executing: {routine.name}</h1>
+        <h1 className={styles.title}>Ejecutando: {routine.name}</h1>
 
         <div className={styles.exerciseCard}>
           <h2>{exercise.name}</h2>
-          <p><strong>Sets:</strong> {exercise.sets}</p>
-          <p><strong>Reps:</strong> {exercise.reps}</p>
-          <p><strong>Weight:</strong> {exercise.weight} kg</p>
+          <p><strong>Set:</strong> {currentSet} de {exercise.sets}</p>
+          <p><strong>Reps objetivo:</strong> {exercise.reps}</p>
+          <p><strong>Peso:</strong> {exercise.weight} kg</p>
 
           <div className={styles.inputGroup}>
-            <label htmlFor="repsDone">Reps done:</label>
+            <label htmlFor="repsDone">Reps completadas en este set:</label>
             <input
               id="repsDone"
               type="number"
               value={repsDone}
               onChange={(e) => setRepsDone(e.target.value)}
-              placeholder="Enter reps completed"
+              placeholder="Ej: 10"
             />
           </div>
 
           <button onClick={handleStartTimer} disabled={timerRunning}>
-            {timerRunning ? `Exercise Timer: ${formatTime(exerciseTimer)}` : "Start Exercise Timer"}
-          </button>
+  {timerRunning ? `Timer: ${formatTime(exerciseTimer)}` : "Iniciar timer del set"}
+</button>
+
+{results[currentExerciseIndex]?.repsPerSet?.length > 0 && (
+  <div className={styles.setsCompleted}>
+    <h4>Sets completados:</h4>
+    <ul>
+      {results[currentExerciseIndex].repsPerSet.map((rep, idx) => (
+        <li key={idx}>✅ Set {idx + 1}: {rep} reps</li>
+      ))}
+    </ul>
+  </div>
+)}
+
 
           {inRest && (
             <div className={styles.restSection}>
-              <p>Rest Time: {formatTime(restTimer)}</p>
-              <button onClick={() => setRestTimer(0)}>Skip Rest</button>
+              <p>Descanso: {formatTime(restTimer)}</p>
+              <button onClick={() => setRestTimer(0)}>Saltar descanso</button>
             </div>
           )}
 
           <div className={styles.navigation}>
-            <button onClick={handlePrev} disabled={current === 0}>Previous</button>
-            <button onClick={handleNext}>
-              {isLast ? "Finalizar rutina" : "Next"}
+            <button onClick={handleCompleteSet}>
+              {currentSet < exercise.sets ? "Finalizar set" : "Finalizar ejercicio"}
             </button>
           </div>
         </div>
 
         <div className={styles.progress}>
-          <p>Exercise {current + 1} of {routine.exercises.length}</p>
+          <p>Ejercicio {currentExerciseIndex + 1} de {routine.exercises.length}</p>
         </div>
       </div>
       <Footer />

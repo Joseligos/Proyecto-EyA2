@@ -38,8 +38,12 @@ const Header = () => {
             <Link to="/login" className={user ? styles.disabledLink : ""}>
               Start
             </Link>
+            {user && <Link to="/chat">Comunidad</Link>}
             {user && (
-              <button className={styles.myHubBtn} onClick={() => navigate("/dashboard")}>
+              <button
+                className={styles.myHubBtn}
+                onClick={() => navigate("/dashboard")}
+              >
                 My Hub
               </button>
             )}

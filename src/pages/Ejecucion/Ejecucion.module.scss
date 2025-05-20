@@ -1,130 +1,132 @@
 .container {
   background-color: #080016;
-  color: white;
   min-height: 100vh;
-  padding: 40px 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
+  padding: 2rem;
+  color: white;
 }
 
 .title {
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: bold;
-  color: #4fa3ff;
-  margin-bottom: 10px;
   text-align: center;
+  margin-bottom: 2rem;
+  color: white;
 }
 
 .exerciseCard {
-  background-color: #1e0055;
-  border-radius: 12px;
-  padding: 30px;
-  max-width: 500px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: #1a0033;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin: 0 auto 2rem;
+  max-width: 600px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
 
-  h2 {
-    font-size: 24px;
-    margin-bottom: 12px;
-    color: #ffffff;
-  }
+.exerciseCard h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #a770ff;
+}
 
-  p {
-    font-size: 16px;
-    margin: 6px 0;
-    color: #dddddd;
-
-    strong {
-      color: #4fa3ff;
-    }
-  }
-
-  button {
-    margin-top: 14px;
-    background-color: #4fa3ff;
-    color: #080016;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #347ddb;
-    }
-
-    &:disabled {
-      background-color: #888;
-      cursor: not-allowed;
-    }
-  }
+.exerciseCard p {
+  font-size: 1rem;
+  margin: 0.25rem 0;
 }
 
 .inputGroup {
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  gap: 0.5rem;
+}
 
-  label {
-    color: #aaa;
-    font-size: 14px;
-    margin-bottom: 6px;
-    text-align: left;
-  }
+.inputGroup label {
+  font-weight: 600;
+  color: white;
+}
 
-  input {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #4fa3ff;
-    background-color: #2a0070;
-    color: white;
-    font-size: 14px;
+.inputGroup input {
+  padding: 0.6rem;
+  border-radius: 0.6rem;
+  background-color: #22004d;
+  border: 1px solid #5e3a9c;
+  color: white;
+  font-size: 1rem;
+}
 
-    &::placeholder {
-      color: #bbb;
-    }
-  }
+.inputGroup input:focus {
+  outline: 2px solid #a770ff;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.8rem;
+  background-color: #a770ff;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #8c5ae0;
+}
+
+button:disabled {
+  background-color: #5c2a8a;
+  cursor: not-allowed;
 }
 
 .restSection {
-  margin-top: 20px;
-  background-color: #2a0070;
-  padding: 16px;
-  border-radius: 8px;
-
-  p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #ffffff;
-  }
-
-  button {
-    background-color: #ff4f4f;
-    color: white;
-    padding: 8px 16px;
-    font-size: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #d63d3d;
-    }
-  }
+  margin-top: 1.5rem;
+  background-color: #2e005c;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  color: #ffccff;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.1);
 }
 
 .navigation {
-  margin-top: 20px;
+  margin-top: 2rem;
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: center;
+}
+
+.navigation button {
+  margin: 0 0.5rem;
 }
 
 .progress {
-  font-size: 14px;
-  color: #bbbbbb;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: #ccccff;
+}
+.setsCompleted {
+  margin-top: 1.5rem;
+  background-color: #140033;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-size: 0.95rem;
+  color: #ccffcc;
+
+  h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #66ffcc;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  li {
+    margin-bottom: 0.25rem;
+  }
 }
