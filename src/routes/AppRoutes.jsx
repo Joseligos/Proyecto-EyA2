@@ -12,6 +12,7 @@ import Support from "../pages/Support/Support";
 import Wellness from "../pages/Wellness/Wellness";
 import Nutrition from "../pages/Nutrition/Nutrition";
 import Fitness from "../pages/Fitness/Fitness";
+import PaymentResponse from "../pages/PaymentResponse/PaymentResponse";
 
 // Rutas privadas
 import PrivateRoute from "./PrivateRoute";
@@ -28,6 +29,7 @@ const AppRoutes = () => {
     <BrowserRouter>
       <CartProvider>
         <Routes>
+          
           {/* Rutas públicas */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -37,6 +39,7 @@ const AppRoutes = () => {
           <Route path="/blog/wellness" element={<Wellness />} />
           <Route path="/blog/nutrition" element={<Nutrition />} />
           <Route path="/blog/fitness" element={<Fitness />} />
+          <Route path="/payment-response" element={<PaymentResponse />} />
 
           {/* Rutas privadas */}
           <Route

@@ -1,23 +1,30 @@
-import { Minus, Plus, Trash2, ShoppingCart } from "lucide-react"
+import { Minus, Plus, Trash2, ShoppingCart } from 'lucide-react'
 import Header from "../../components/Shared/Header"
 import Footer from "../../components/Shared/Footer"
 import { useCart } from "../../context/CartContext"
 import styles from "./Carrito.module.scss"
 import { useNavigate } from "react-router-dom"
 import useDocumentTitle from "../../hooks/useDocumentTitle"
+import Checkout from "../../components/Checkout"
 
 const Carrito = () => {
     useDocumentTitle("Carrito | proyecto EyA");
     const { state, updateQuantity, removeItem } = useCart()
     const { items } = state
     const navigate = useNavigate()
+    
+    const formatPrice = (price) => {
+        return `$${price.toLocaleString('es-CO')}`
+    }
+    
     const calculateSubtotal = () => {
         return items.reduce((total, item) => total + item.price * item.quantity, 0)
     }
 
-    const shipping = items.length > 0 ? 9.99 : 0
-    const tax = calculateSubtotal() * 0.1 // 10% tax rate
-    const total = calculateSubtotal() + shipping + tax
+    const subtotal = calculateSubtotal()
+    const shipping = subtotal > 200000 ? 0 : 10000
+    const tax = subtotal * 0.19 
+    const total = subtotal + shipping + tax
 
     return (
         <>
@@ -56,7 +63,7 @@ const Carrito = () => {
                             <Plus className={styles.icon} />
                             </button>
                         </div>
-                        <p className={styles.itemprice}>${(item.price * item.quantity).toFixed(2)}</p>
+                        <p className={styles.itemprice}>{formatPrice(item.price * item.quantity)}</p>
                         </div>
                     </div>
                     </div>
@@ -79,25 +86,29 @@ const Carrito = () => {
                 <h2>Order Summary</h2>
                 <div className={styles.summaryrow}>
                 <span>Subtotal</span>
-                <span>${calculateSubtotal().toFixed(2)}</span>
+                <span>{formatPrice(subtotal)}</span>
                 </div>
                 <div className={styles.summaryrow}>
                 <span>Shipping</span>
-                <span>${shipping.toFixed(2)}</span>
+                <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
                 </div>
                 <div className={styles.summaryrow}>
-                <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>Tax (19%)</span>
+                <span>{formatPrice(tax)}</span>
                 </div>
                 <div className={styles.divider}></div>
                 <div className={styles.summaryrow}>
                 <span className={styles.totallabel}>Total</span>
-                <span className={styles.totalamount}>${total.toFixed(2)}</span>
+                <span className={styles.totalamount}>{formatPrice(total)}</span>
                 </div>
-                <button className={styles.checkoutbutton} disabled={items.length === 0}>
-                Proceed to Checkout
-                </button>
-                <p className={styles.shippingnote}>Free shipping on orders over $100. 30-day money-back guarantee.</p>
+                <Checkout />
+                <p className={styles.shippingnote}>
+                    {subtotal > 200000 
+                        ? 'Free shipping applied to your order!' 
+                        : `Free shipping on orders over ${formatPrice(200000)}. Add ${formatPrice(200000 - subtotal)} more to qualify.`
+                    } 
+                    30-day money-back guarantee.
+                </p>
             </div>
             </div>
         </div>
