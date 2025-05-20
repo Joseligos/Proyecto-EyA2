@@ -1,0 +1,93 @@
+.fitness {
+padding: 3rem 1.5rem;
+background-color: #0a001c;
+color: white;
+font-family: "Segoe UI", sans-serif;
+text-align: center;
+
+h1 {
+    font-size: 2.5rem;
+    color: #81c2ff;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #dcdcdc;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+.carousel {
+display: flex;
+  justify-content: center;      // ✅ Centra horizontalmente el contenedor del carrusel
+margin: 0 auto 3rem;
+padding-bottom: 10px;
+
+.track {
+    display: flex;
+    gap: 16px;
+    padding: 10px;
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    max-width: 100%;
+    scroll-snap-type: x mandatory;
+}
+
+img {
+    border-radius: 12px;
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #4fa3ff;
+    transition: transform 0.3s ease;
+    scroll-snap-align: center;
+
+    &:hover {
+    transform: scale(1.05);
+    }
+}
+}
+
+
+
+  /* Tarjetas */
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.item {
+    background-color: #1a0244;
+    border: 1px solid #4fa3ff;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.3s ease;
+
+    &:hover {
+    transform: translateY(-5px);
+    background-color: #240260;
+    }
+
+    .icon {
+    color: #4fa3ff;
+    margin-bottom: 1rem;
+    }
+
+    h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    color: #ffffff;
+    }
+
+    p {
+    font-size: 0.95rem;
+    color: #cccccc;
+    }
+}
+}

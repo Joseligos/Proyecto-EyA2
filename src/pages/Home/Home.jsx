@@ -5,6 +5,14 @@ import Header from "../../components/Shared/Header";
 import { useAuth } from "../../context/AuthContext";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import Footer from "../../components/Shared/Footer";
+import {
+  ShoppingCart,
+  BookOpen,
+  LifeBuoy,
+  HeartPulse,
+  Apple,
+  Dumbbell
+} from "lucide-react";
 
 const Home = () => {
   useDocumentTitle("Inicio | JF - proyecto EyA");
@@ -34,40 +42,48 @@ const Home = () => {
           </div>
         </div>
 
+        {/* Explore More */}
         <div className={styles.section}>
           <h2>Explore More</h2>
           <div className={styles.cardGrid}>
             <div className={styles.card} onClick={() => navigate("/store")}>
+              <ShoppingCart className={styles.icon} size={40} strokeWidth={2} />
               <h3>Shop Now</h3>
               <p>Find the best fitness gear and supplements.</p>
             </div>
             <div className={styles.card} onClick={() => navigate("/blog")}>
+              <BookOpen className={styles.icon} size={40} strokeWidth={2} />
               <h3>Blog</h3>
               <p>Read our latest fitness articles and tips.</p>
             </div>
             <div className={styles.card} onClick={() => navigate("/support")}>
+              <LifeBuoy className={styles.icon} size={40} strokeWidth={2} />
               <h3>Support</h3>
               <p>Get assistance with your fitness journey.</p>
             </div>
           </div>
         </div>
 
+        {/* From Our Blog */}
         <div className={styles.section}>
           <h2>From Our Blog</h2>
           <div className={styles.blogGrid}>
             <div className={styles.blogCard} onClick={() => navigate("/blog/wellness")}>
+              <HeartPulse className={styles.icon} size={36} strokeWidth={2} />
               <h3>Wellness</h3>
               <p><strong>Maximize Your Workout Efficiency</strong></p>
               <p>Learn how to optimize your training sessions for better results.</p>
               <span>Jane Doe • 11 Jan 2022 • 5 min read</span>
             </div>
             <div className={styles.blogCard} onClick={() => navigate("/blog/nutrition")}>
+              <Apple className={styles.icon} size={36} strokeWidth={2} />
               <h3>Nutrition</h3>
               <p><strong>The Power of Hydration</strong></p>
               <p>Discover the importance of staying hydrated during workouts.</p>
               <span>John Smith • 15 Jan 2022 • 4 min read</span>
             </div>
             <div className={styles.blogCard} onClick={() => navigate("/blog/fitness")}>
+              <Dumbbell className={styles.icon} size={36} strokeWidth={2} />
               <h3>Fitness</h3>
               <p><strong>Strength Training Basics</strong></p>
               <p>Essential tips for beginners in strength training.</p>
@@ -82,4 +98,7 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
 
