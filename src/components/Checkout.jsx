@@ -73,7 +73,6 @@ const Checkout = () => {
       
       handler.open({
         external: false,
-        autoclick: true, 
         name: 'Fitness Hub Order',
         description: `Order with ${state.totalItems} items`,
         invoice: order.reference,
@@ -88,6 +87,7 @@ const Checkout = () => {
         email_billing: user?.email || '',
         
         response: responseUrl.toString(),
+        confirmation: responseUrl.toString(),
         
         extra1: order.orderId,
       });
