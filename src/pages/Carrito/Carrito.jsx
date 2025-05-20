@@ -3,10 +3,11 @@ import Header from "../../components/Shared/Header"
 import Footer from "../../components/Shared/Footer"
 import { useCart } from "../../context/CartContext"
 import styles from "./Carrito.module.scss"
-import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import useDocumentTitle from "../../hooks/useDocumentTitle"
 
 const Carrito = () => {
+    useDocumentTitle("Carrito | proyecto EyA");
     const { state, updateQuantity, removeItem } = useCart()
     const { items } = state
     const navigate = useNavigate()
