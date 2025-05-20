@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ShoppingCart, Filter, Search } from "lucide-react"
+import { ShoppingCart, Filter, Search } from 'lucide-react'
 import Header from "../../components/Shared/Header"
 import Footer from "../../components/Shared/Footer"
 import { useCart } from "../../context/CartContext"
 import styles from "./Tienda.module.scss"
 import useDocumentTitle from "../../hooks/useDocumentTitle";
-import { Link } from "react-router-dom"
+
 
 const Tienda = () => {
     useDocumentTitle("Tienda | proyecto EyA");
@@ -28,7 +28,7 @@ const Tienda = () => {
         id: 1,
         name: "12-Week Strength Program",
         description: "Complete strength training program for all fitness levels",
-        price: 99.99,
+        price: 399000, 
         category: "programs",
         image: "/placeholder.svg?height=300&width=300",
         },
@@ -36,7 +36,7 @@ const Tienda = () => {
         id: 2,
         name: "Resistance Bands Set",
         description: "5-piece resistance bands for home workouts",
-        price: 29.99,
+        price: 120000, 
         category: "equipment",
         image: "/placeholder.svg?height=300&width=300",
         },
@@ -44,7 +44,7 @@ const Tienda = () => {
         id: 3,
         name: "Premium Whey Protein",
         description: "2kg container of high-quality whey protein",
-        price: 49.99,
+        price: 200000,
         category: "nutrition",
         image: "/placeholder.svg?height=300&width=300",
         },
@@ -52,7 +52,7 @@ const Tienda = () => {
         id: 4,
         name: "Performance Fitness Tracker",
         description: "Track your workouts, heart rate, and progress",
-        price: 129.99,
+        price: 520000, 
         category: "equipment",
         image: "/placeholder.svg?height=300&width=300",
         },
@@ -60,7 +60,7 @@ const Tienda = () => {
         id: 5,
         name: "HIIT Cardio Program",
         description: "8-week high intensity interval training program",
-        price: 79.99,
+        price: 320000, 
         category: "programs",
         image: "/placeholder.svg?height=300&width=300",
         },
@@ -68,7 +68,7 @@ const Tienda = () => {
         id: 6,
         name: "Compression Fitness Shirt",
         description: "Moisture-wicking compression shirt for workouts",
-        price: 34.99,
+        price: 140000, 
         category: "apparel",
         image: "/placeholder.svg?height=300&width=300",
         },
@@ -76,7 +76,7 @@ const Tienda = () => {
         id: 7,
         name: "Pre-Workout Supplement",
         description: "Energy-boosting pre-workout formula",
-        price: 39.99,
+        price: 10000, 
         category: "nutrition",
         image: "/placeholder.svg?height=300&width=300",
         },
@@ -84,13 +84,13 @@ const Tienda = () => {
         id: 8,
         name: "Adjustable Dumbbells",
         description: "Space-saving adjustable weight dumbbells",
-        price: 199.99,
+        price: 800000, 
         category: "equipment",
         image: "/placeholder.svg?height=300&width=300",
         },
     ]
 
-    // Filter products by category and search query
+    
     const filteredProducts = products
         .filter((product) => activeCategory === "all" || product.category === activeCategory)
         .filter(
@@ -108,6 +108,11 @@ const Tienda = () => {
         price: product.price,
         image: product.image,
         })
+    }
+
+
+    const formatPrice = (price) => {
+        return `$${price.toLocaleString('es-CO')}`
     }
 
     return (
@@ -164,7 +169,7 @@ const Tienda = () => {
                     <h3>{product.name}</h3>
                     <p className={styles.productdescription}>{product.description}</p>
                     <div className={styles.productfooter}>
-                        <span className={styles.productprice}>${product.price.toFixed(2)}</span>
+                        <span className={styles.productprice}>{formatPrice(product.price)}</span>
                         <button className={styles.addtocartbutton} onClick={() => handleAddToCart(product)}>
                         Add to Cart
                         </button>
