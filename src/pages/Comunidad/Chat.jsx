@@ -41,6 +41,7 @@ const Chat = () => {
         ...doc.data(),
       }));
       setMessages(msgs);
+      scrollToBottom(); // scroll controlado solo dentro del chatBox
     });
 
     return () => unsubscribe();
@@ -67,38 +68,39 @@ const Chat = () => {
   };
 
   const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = chatEndRef.current;
+    if (el && el.scrollIntoView) {
+      el.scrollIntoView({ behavior: "auto", block: "end" });
+    }
   };
 
   return (
     <>
       <Header />
       <div className={styles.chatContainer}>
-<aside className={`${styles.sidebar} ${collapsed ? styles.closed : ""}`}>
-  <div className={styles.sidebarHeader}>
-    <p className={styles.sidebarTitle}>Canales de comunicación</p>
-    <button className={styles.collapseBtn} onClick={() => setCollapsed(!collapsed)}>
-      {collapsed ? "▶" : "◀"}
-    </button>
-  </div>
-
-  {!collapsed && (
-    <>
-      <h3>Canales</h3>
-      {chatChannels.map((ch) => (
-        <button
-          key={ch.id}
-          className={`${styles.channelBtn} ${currentChannel === ch.id ? styles.active : ""}`}
-          onClick={() => setCurrentChannel(ch.id)}
-        >
-          {ch.label}
-        </button>
-      ))}
-      <p className={styles.comingSoon}>Más canales próximamente...</p>
-    </>
-  )}
-</aside>
-
+        <aside className={`${styles.sidebar} ${collapsed ? styles.closed : ""}`}>
+          <div className={styles.sidebarHeader}>
+            <p className={styles.sidebarTitle}>Canales de comunicación</p>
+            <button className={styles.collapseBtn} onClick={() => setCollapsed(!collapsed)}>
+              {collapsed ? "▶" : "◀"}
+            </button>
+          </div>
+          {!collapsed && (
+            <>
+              <h3>Canales</h3>
+              {chatChannels.map((ch) => (
+                <button
+                  key={ch.id}
+                  className={`${styles.channelBtn} ${currentChannel === ch.id ? styles.active : ""}`}
+                  onClick={() => setCurrentChannel(ch.id)}
+                >
+                  {ch.label}
+                </button>
+              ))}
+              <p className={styles.comingSoon}>Más canales próximamente...</p>
+            </>
+          )}
+        </aside>
 
         <main className={styles.chatMain}>
           <h1>{chatChannels.find((c) => c.id === currentChannel)?.label}</h1>
