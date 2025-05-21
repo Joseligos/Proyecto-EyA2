@@ -62,17 +62,21 @@ const PaymentResponse = () => {
           setStatus('failed');
         }
         
+        // Create a clean payment details object without undefined values
+        const paymentDetails = {
+          transactionId: data.data.x_transaction_id || '',
+          reference: data.data.x_ref_payco || '',
+          responseCode: data.data.x_response || '',
+          responseReason: data.data.x_response_reason_text || '',
+          // Only include paymentMethod if it exists
+          ...(data.data.x_payment_method && { paymentMethod: data.data.x_payment_method }),
+          updatedAt: new Date().toISOString()
+        };
+        
         // Update the order status in Firestore
         await updateDoc(doc(db, 'orders', orderId), {
           status: newStatus,
-          paymentDetails: {
-            transactionId: data.data.x_transaction_id,
-            reference: data.data.x_ref_payco,
-            responseCode: data.data.x_response,
-            responseReason: data.data.x_response_reason_text,
-            paymentMethod: data.data.x_payment_method,
-            updatedAt: new Date().toISOString()
-          }
+          paymentDetails
         });
         
       } catch (error) {
@@ -102,12 +106,14 @@ const PaymentResponse = () => {
               <div className={styles.successIcon}>✓</div>
               <h2>Payment Successful!</h2>
               <p>Your order has been placed successfully.</p>
-              {paymentInfo && (
+              {paymentInfo && paymentInfo.x_transaction_id && (
                 <div className={styles.paymentDetails}>
                   <p><strong>Transaction ID:</strong> {paymentInfo.x_transaction_id}</p>
                   <p><strong>Reference:</strong> {paymentInfo.x_ref_payco}</p>
                   <p><strong>Amount:</strong> ${paymentInfo.x_amount}</p>
-                  <p><strong>Payment Method:</strong> {paymentInfo.x_payment_method}</p>
+                  {paymentInfo.x_payment_method && (
+                    <p><strong>Payment Method:</strong> {paymentInfo.x_payment_method}</p>
+                  )}
                 </div>
               )}
               <div className={styles.buttonGroup}>
@@ -126,7 +132,7 @@ const PaymentResponse = () => {
               <div className={styles.pendingIcon}>⏱</div>
               <h2>Payment Pending</h2>
               <p>Your payment is being processed. We'll update you once it's complete.</p>
-              {paymentInfo && (
+              {paymentInfo && paymentInfo.x_ref_payco && (
                 <p><strong>Reference:</strong> {paymentInfo.x_ref_payco}</p>
               )}
               <div className={styles.buttonGroup}>
@@ -145,7 +151,7 @@ const PaymentResponse = () => {
               <div className={styles.errorIcon}>✗</div>
               <h2>Payment Failed</h2>
               <p>There was an issue processing your payment.</p>
-              {paymentInfo && (
+              {paymentInfo && paymentInfo.x_response_reason_text && (
                 <p><strong>Reason:</strong> {paymentInfo.x_response_reason_text}</p>
               )}
               <div className={styles.buttonGroup}>
