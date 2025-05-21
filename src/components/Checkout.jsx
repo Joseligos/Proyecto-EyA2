@@ -1,30 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { db } from '../firebase/config';
+import { useNavigate } from 'react-router-dom';
+import { db } from '../firebase/config'; // Import your Firebase config
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import styles from './Checkout.module.scss';
 
 const Checkout = () => {
   const { state, clearCart } = useCart();
   const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [epaycoLoaded, setEpaycoLoaded] = useState(false);
+  const navigate = useNavigate();
   
+  // Calculate totals
   const calculateSubtotal = () => {
     return state.items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
   
   const subtotal = calculateSubtotal();
-  const tax = subtotal * 0.1; 
+  const tax = subtotal * 0.1; // 10% tax
   const shipping = state.items.length > 0 ? 9.99 : 0;
   const total = subtotal + tax + shipping;
   
+  // Save order to Firestore before redirecting to payment
   const saveOrderToFirestore = async () => {
+    if (!user) {
+      // Redirect to login if not logged in
+      navigate('/login', { state: { returnUrl: '/cart' } });
+      return null;
+    }
     
+    // Create a unique reference for this order
     const reference = `order-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     
     try {
+      // Save order to Firestore
       const orderRef = await addDoc(collection(db, 'orders'), {
         userId: user.uid,
         userEmail: user.email,
@@ -38,6 +47,7 @@ const Checkout = () => {
         createdAt: serverTimestamp()
       });
       
+      // Return the order reference and ID
       return {
         reference,
         orderId: orderRef.id
@@ -49,92 +59,62 @@ const Checkout = () => {
   };
   
   const handleCheckout = async () => {
-    if (!epaycoLoaded) {
-      alert("Payment system is still loading. Please try again in a moment.");
-      return;
-    }
+    // First save the order to Firestore
+    const order = await saveOrderToFirestore();
+    if (!order) return;
     
-    setIsLoading(true);
+    // Configure ePayco parameters
+    const handler = window.ePayco.checkout.configure({
+      key: '78498d8c6d5cecaba462c0758054f172',
+      test: true // Set to false in production
+    });
     
-    try {
-      const order = await saveOrderToFirestore();
-      if (!order) {
-        setIsLoading(false);
-        return;
-      }
+    // Open payment window
+    handler.open({
+      external: 'false',
+      name: 'Fitness Hub Order',
+      description: `Order with ${state.totalItems} items`,
+      invoice: order.reference,
+      currency: 'cop', // or 'usd', etc.
+      amount: total.toFixed(2),
+      tax_base: subtotal.toFixed(2),
+      tax: tax.toFixed(2),
+      country: 'co', // Country code
+      lang: 'en',
       
-      const responseUrl = new URL('/payment-response', window.location.origin);
-      responseUrl.searchParams.append('orderId', order.orderId);
+      // Customer info
+      name_billing: user?.displayName || '',
+      email_billing: user?.email || '',
       
-      const handler = window.ePayco.checkout.configure({
-        key: '78498d8c6d5cecaba462c0758054f172', 
-        test: true 
-      });
+      // Response URLs - frontend routes
+      response: `${window.location.origin}/payment-response?orderId=${order.orderId}`,
       
-      handler.open({
-        external: false,
-        name: 'Fitness Hub Order',
-        description: `Order with ${state.totalItems} items`,
-        invoice: order.reference,
-        currency: 'cop',
-        amount: total.toFixed(2),
-        tax_base: subtotal.toFixed(2),
-        tax: tax.toFixed(2),
-        country: 'co',
-        lang: 'en',
-        
-        name_billing: user?.displayName || user?.email || 'Customer',
-        email_billing: user?.email || '',
-        
-        response: responseUrl.toString(),
-        confirmation: responseUrl.toString(),
-        
-        extra1: order.orderId,
-      });
-    } catch (error) {
-      console.error("Error during checkout process:", error);
-      alert("There was an error processing your checkout. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+      // Pass order ID as extra data
+      extra1: order.orderId
+    });
   };
 
+  // Load ePayco script
   useEffect(() => {
-    const loadEpayco = () => {
-      if (window.ePayco) {
-        setEpaycoLoaded(true);
-        return;
-      }
-      
-      const script = document.createElement('script');
-      script.src = 'https://checkout.epayco.co/checkout.js';
-      script.async = true;
-      script.onload = () => {
-        console.log("ePayco script loaded successfully");
-        setEpaycoLoaded(true);
-      };
-      script.onerror = () => {
-        console.error("Failed to load ePayco script");
-      };
-      document.body.appendChild(script);
-      
-      return () => {
-        if (document.body.contains(script)) {
-          document.body.removeChild(script);
-        }
-      };
-    };
+    const script = document.createElement('script');
+    script.src = 'https://checkout.epayco.co/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
     
-    loadEpayco();
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
   }, []);
 
   return (
     <button 
-      className={`${styles.checkoutbutton} ${isLoading ? styles.loading : ''}`}
+      className={styles.checkoutbutton} 
       onClick={handleCheckout} 
-      disabled={state.items.length === 0 || isLoading || !epaycoLoaded}
+      disabled={state.items.length === 0}
     >
-      {isLoading ? 'Processing...' : 'Proceed to Checkout'}
+      Proceed to Checkout
     </button>
   );
 };

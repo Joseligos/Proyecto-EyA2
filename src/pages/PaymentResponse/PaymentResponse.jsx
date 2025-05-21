@@ -17,54 +17,44 @@ const PaymentResponse = () => {
   
   useEffect(() => {
     const fetchPaymentStatus = async () => {
+      // Get URL parameters from ePayco redirect
       const urlParams = new URLSearchParams(location.search);
       const ref_payco = urlParams.get('ref_payco');
       const orderId = urlParams.get('orderId');
       
-      console.log("Payment response received:", { ref_payco, orderId });
-      
-      if (!orderId) {
-        console.error("No order ID found in URL");
+      if (!ref_payco || !orderId) {
         setStatus('error');
         return;
       }
       
       try {
+        // 1. Get the order from Firestore
         const orderDoc = await getDoc(doc(db, 'orders', orderId));
         if (!orderDoc.exists()) {
-          console.error("Order not found in Firestore");
           setStatus('error');
           return;
         }
         
-        const orderData = orderDoc.data();
-        setOrder(orderData);
+        setOrder(orderDoc.data());
         
-        if (!ref_payco) {
-          console.warn("No ref_payco parameter found, payment may not be complete");
-          setStatus('pending');
-          return;
-        }
-        
+        // 2. Verify the transaction status with ePayco
         const response = await fetch(`https://secure.epayco.co/validation/v1/reference/${ref_payco}`);
         const data = await response.json();
         
-        console.log("ePayco validation response:", data);
-        
         if (!response.ok) {
-          console.error("Error validating payment with ePayco");
           setStatus('error');
           return;
         }
         
         setPaymentInfo(data.data);
         
+        // 3. Update order status in Firestore based on payment result
         let newStatus = 'failed';
         
         if (data.data.x_response === 'Aceptada') {
           newStatus = 'completed';
           setStatus('success');
-          clearCart(); 
+          clearCart(); // Clear the cart on successful payment
         } else if (data.data.x_response === 'Pendiente') {
           newStatus = 'pending';
           setStatus('pending');
@@ -72,6 +62,7 @@ const PaymentResponse = () => {
           setStatus('failed');
         }
         
+        // Update the order status in Firestore
         await updateDoc(doc(db, 'orders', orderId), {
           status: newStatus,
           paymentDetails: {
