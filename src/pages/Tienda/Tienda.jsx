@@ -16,7 +16,6 @@ const Tienda = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [expandedCategories, setExpandedCategories] = useState({});
     
-    // Category tree structure
     const categoryTree = [
         { 
             id: "programs", 
@@ -392,7 +391,6 @@ const Tienda = () => {
         },
     ];
 
-    // Toggle category expansion
     const toggleCategory = (categoryId) => {
         setExpandedCategories(prev => ({
             ...prev,
@@ -400,20 +398,16 @@ const Tienda = () => {
         }));
     };
 
-    // Handle category selection
     const handleCategoryClick = (categoryId) => {
         setActiveCategory(categoryId);
         setActiveSubcategory(null);
     };
 
-    // Handle subcategory selection
     const handleSubcategoryClick = (subcategoryId) => {
         setActiveSubcategory(subcategoryId);
     };
 
-    // Filter products based on selected category/subcategory and search query
     const filteredProducts = products.filter(product => {
-        // Filter by category and subcategory
         const categoryMatch = 
             activeCategory === "all" || 
             product.category === activeCategory;
@@ -422,7 +416,6 @@ const Tienda = () => {
             !activeSubcategory || 
             product.subcategory === activeSubcategory;
         
-        // Filter by search query
         const searchMatch = 
             searchQuery === "" || 
             product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -431,7 +424,6 @@ const Tienda = () => {
         return categoryMatch && subcategoryMatch && searchMatch;
     });
 
-    // Add to cart handler
     const handleAddToCart = (product) => {
         addItem({
             id: product.id,
@@ -442,12 +434,10 @@ const Tienda = () => {
         });
     };
 
-    // Format price in Colombian Pesos
     const formatPrice = (price) => {
         return `$${price.toLocaleString('es-CO')}`;
     };
 
-    // Reset filters
     const resetFilters = () => {
         setActiveCategory("all");
         setActiveSubcategory(null);
@@ -469,7 +459,6 @@ const Tienda = () => {
             </div>
 
             <div className={styles.storelayout}>
-                {/* Sidebar with category tree */}
                 <div className={styles.sidebar}>
                     <h2>Categories</h2>
                     <ul className={styles.categorytree}>
@@ -517,9 +506,7 @@ const Tienda = () => {
                     </ul>
                 </div>
 
-                {/* Main content area */}
                 <div className={styles.maincontent}>
-                    {/* Search bar */}
                     <div className={styles.searchbar}>
                         <div className={styles.searchinputwrapper}>
                             <Search size={20} className={styles.searchicon} />
@@ -533,7 +520,6 @@ const Tienda = () => {
                         </div>
                     </div>
 
-                    {/* Active filters display */}
                     <div className={styles.activefilters}>
                         {activeCategory !== "all" && (
                             <div className={styles.filterchip}>
@@ -561,7 +547,6 @@ const Tienda = () => {
                         )}
                     </div>
 
-                    {/* Products grid */}
                     <div className={styles.productsgrid}>
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => (
@@ -603,7 +588,6 @@ const Tienda = () => {
                 </div>
             </div>
 
-            {/* Featured section */}
             <div className={styles.featuredsection}>
                 <div className={styles.featuredcard}>
                     <div className={styles.featuredcontent}>
