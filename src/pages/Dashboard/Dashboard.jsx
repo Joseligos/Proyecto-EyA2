@@ -15,6 +15,11 @@ import {
 } from "firebase/firestore";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 
+// Imágenes ilustrativas para las secciones del dashboard
+import dashboardHomeImg from "../../assets/images/dashboard_home.jpg";
+import dashboardProgressImg from "../../assets/images/dashboard_progress.jpg";
+import dashboardRoutinesImg from "../../assets/images/dashboard_routines.jpg";
+
 const Dashboard = () => {
   useDocumentTitle("Dashboard | JF - proyecto EyA");
 
@@ -103,7 +108,9 @@ const Dashboard = () => {
             <h2>Welcome to Your Dashboard</h2>
             <p>Track your progress and manage your workouts all in one convenient place.</p>
           </div>
-          <div className={styles.cardImage}></div>
+          <div className={styles.cardImage}>
+            <img src={dashboardHomeImg} alt="Dashboard Hero" />
+          </div>
         </section>
 
         <section className={styles.cardSection}>
@@ -112,7 +119,9 @@ const Dashboard = () => {
             <p>View the history of your routines and exercises.</p>
             <button onClick={() => navigate("/progress")}>Go to Progress</button>
           </div>
-          <div className={styles.cardImage}></div>
+          <div className={styles.cardImage}>
+            <img src={dashboardProgressImg} alt="Progress Preview" />
+          </div>
         </section>
 
         {loading ? (
@@ -126,7 +135,9 @@ const Dashboard = () => {
               <p>You haven't saved any routines. Let's create your first one!</p>
               <button onClick={() => navigate("/workouts")}>Create New Routine</button>
             </div>
-            <div className={styles.cardImage}></div>
+            <div className={styles.cardImage}>
+              <img src={dashboardRoutinesImg} alt="No routines" />
+            </div>
           </div>
         ) : (
           <section className={styles.cardSection}>
@@ -202,7 +213,9 @@ const Dashboard = () => {
                 ))}
               </ul>
             </div>
-            <div className={styles.cardImage}></div>
+            <div className={styles.cardImage}>
+              <img src={dashboardRoutinesImg} alt="My Routines" />
+            </div>
           </section>
         )}
 
