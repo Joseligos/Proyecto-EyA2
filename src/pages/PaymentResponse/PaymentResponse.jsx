@@ -17,7 +17,7 @@ const PaymentResponse = () => {
   
   useEffect(() => {
     const fetchPaymentStatus = async () => {
-      // Get URL parameters from ePayco redirect
+
       const urlParams = new URLSearchParams(location.search);
       const ref_payco = urlParams.get('ref_payco');
       const orderId = urlParams.get('orderId');
@@ -28,7 +28,7 @@ const PaymentResponse = () => {
       }
       
       try {
-        // 1. Get the order from Firestore
+  
         const orderDoc = await getDoc(doc(db, 'orders', orderId));
         if (!orderDoc.exists()) {
           setStatus('error');
@@ -37,7 +37,7 @@ const PaymentResponse = () => {
         
         setOrder(orderDoc.data());
         
-        // 2. Verify the transaction status with ePayco
+       
         const response = await fetch(`https://secure.epayco.co/validation/v1/reference/${ref_payco}`);
         const data = await response.json();
         
@@ -48,13 +48,13 @@ const PaymentResponse = () => {
         
         setPaymentInfo(data.data);
         
-        // 3. Update order status in Firestore based on payment result
+        
         let newStatus = 'failed';
         
         if (data.data.x_response === 'Aceptada') {
           newStatus = 'completed';
           setStatus('success');
-          clearCart(); // Clear the cart on successful payment
+          clearCart(); 
         } else if (data.data.x_response === 'Pendiente') {
           newStatus = 'pending';
           setStatus('pending');
@@ -62,18 +62,18 @@ const PaymentResponse = () => {
           setStatus('failed');
         }
         
-        // Create a clean payment details object without undefined values
+      
         const paymentDetails = {
           transactionId: data.data.x_transaction_id || '',
           reference: data.data.x_ref_payco || '',
           responseCode: data.data.x_response || '',
           responseReason: data.data.x_response_reason_text || '',
-          // Only include paymentMethod if it exists
+       
           ...(data.data.x_payment_method && { paymentMethod: data.data.x_payment_method }),
           updatedAt: new Date().toISOString()
         };
         
-        // Update the order status in Firestore
+      
         await updateDoc(doc(db, 'orders', orderId), {
           status: newStatus,
           paymentDetails
@@ -107,7 +107,7 @@ const PaymentResponse = () => {
               <h2>Payment Successful!</h2>
               <p>Your order has been placed successfully.</p>
               
-              {/* Order Items Section */}
+              
               {order && order.items && (
                 <div className={styles.orderItems}>
                   <h3>Order Items</h3>
@@ -134,7 +134,7 @@ const PaymentResponse = () => {
                     ))}
                   </div>
                   
-                  {/* Order Summary */}
+                  
                   <div className={styles.orderSummary}>
                     <div className={styles.summaryRow}>
                       <span>Subtotal:</span>
@@ -191,7 +191,7 @@ const PaymentResponse = () => {
               <h2>Payment Pending</h2>
               <p>Your payment is being processed. We'll update you once it's complete.</p>
               
-              {/* Show order items for pending payments too */}
+              
               {order && order.items && (
                 <div className={styles.orderItems}>
                   <h3>Order Items</h3>

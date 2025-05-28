@@ -1,16 +1,79 @@
-// PaymentResponse.module.scss (add these new styles)
+.paymentResponseContainer {
+  background-color: #080016;
+  color: white;
+  padding: 40px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.paymentResponse {
+  background-color: #1e0055;
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.paymentResponse h1 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: white;
+  text-align: center; 
+}
+
+.paymentResponse h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: white;
+  text-align: center; 
+}
+
+.paymentResponse p {
+  color: #dddddd;
+  margin-bottom: 15px;
+  text-align: center; 
+}
+
+.successIcon, .pendingIcon, .errorIcon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  text-align: center; 
+  display: block; 
+  width: 100%; 
+}
+
+.successIcon {
+  color: #4fa3ff;
+}
+
+.pendingIcon {
+  color: #ffc107;
+}
+
+.errorIcon {
+  color: #ff4f4f;
+}
+
 .orderItems {
   background-color: #2a0070;
   border-radius: 8px;
   padding: 20px;
   margin: 20px 0;
-  text-align: left;
+  text-align: left; 
 }
 
 .orderItems h3 {
   color: white;
   margin-bottom: 15px;
   font-size: 18px;
+  text-align: center;
 }
 
 .itemsList {
@@ -40,6 +103,7 @@
 
 .itemDetails {
   flex: 1;
+  text-align: left; 
 }
 
 .itemDetails h4 {
@@ -90,11 +154,49 @@
   margin-top: 8px;
 }
 
+.paymentDetails {
+  background-color: #2a0070;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.paymentDetails h3 {
+  color: white;
+  margin-bottom: 15px;
+  font-size: 18px;
+  text-align: center; 
+}
+
+.paymentDetails p {
+  color: #dddddd;
+  margin-bottom: 10px;
+  text-align: left; 
+}
+
 .buttonGroup {
   display: flex;
   gap: 15px;
   margin-top: 30px;
   flex-wrap: wrap;
+  justify-content: center; 
+  align-items: center;
+}
+
+.primaryButton {
+  background-color: #4fa3ff;
+  color: #080016;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.primaryButton:hover {
+  background-color: #347ddb;
 }
 
 .secondaryButton {
@@ -112,10 +214,43 @@
   background-color: rgba(79, 163, 255, 0.1);
 }
 
+.loadingSpinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0;
+  text-align: center; 
+}
+
+.loadingSpinner:before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #dddddd;
+  border-top-color: #4fa3ff;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+.loadingSpinner p {
+  text-align: center;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 768px) {
   .orderItem {
     flex-direction: column;
     text-align: center;
+  }
+  
+  .itemDetails {
+    text-align: center; 
   }
   
   .itemPricing {
@@ -125,5 +260,12 @@
   
   .buttonGroup {
     flex-direction: column;
+    align-items: stretch; 
+  }
+  
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    text-align: center;
   }
 }

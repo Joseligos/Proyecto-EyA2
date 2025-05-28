@@ -1,4 +1,3 @@
-// pages/Orders/Orders.jsx
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { db } from '../../firebase/config';
@@ -25,7 +24,6 @@ const Orders = () => {
       }
 
       try {
-        // Remove orderBy from the query to avoid index requirement
         const ordersQuery = query(
           collection(db, 'orders'),
           where('userId', '==', user.uid)
@@ -41,11 +39,10 @@ const Orders = () => {
           });
         });
 
-        // Sort on the client side instead
         ordersData.sort((a, b) => {
           const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
           const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
-          return dateB - dateA; // Descending order (newest first)
+          return dateB - dateA; 
         });
 
         setOrders(ordersData);
@@ -76,7 +73,6 @@ const Orders = () => {
   const formatDate = (timestamp) => {
     if (!timestamp) return 'N/A';
     
-    // Handle Firestore timestamp
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
