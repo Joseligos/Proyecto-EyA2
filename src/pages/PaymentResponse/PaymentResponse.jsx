@@ -106,8 +106,59 @@ const PaymentResponse = () => {
               <div className={styles.successIcon}>✓</div>
               <h2>Payment Successful!</h2>
               <p>Your order has been placed successfully.</p>
+              
+              {/* Order Items Section */}
+              {order && order.items && (
+                <div className={styles.orderItems}>
+                  <h3>Order Items</h3>
+                  <div className={styles.itemsList}>
+                    {order.items.map((item) => (
+                      <div key={item.id} className={styles.orderItem}>
+                        <div className={styles.itemImage}>
+                          <img 
+                            src={item.image || "/placeholder.svg"} 
+                            alt={item.name} 
+                            width={60} 
+                            height={60} 
+                          />
+                        </div>
+                        <div className={styles.itemDetails}>
+                          <h4>{item.name}</h4>
+                          <p className={styles.itemDescription}>{item.description}</p>
+                          <div className={styles.itemPricing}>
+                            <span className={styles.quantity}>Qty: {item.quantity}</span>
+                            <span className={styles.price}>${(item.price * item.quantity).toFixed(2)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Order Summary */}
+                  <div className={styles.orderSummary}>
+                    <div className={styles.summaryRow}>
+                      <span>Subtotal:</span>
+                      <span>${order.subtotal?.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.summaryRow}>
+                      <span>Tax:</span>
+                      <span>${order.tax?.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.summaryRow}>
+                      <span>Shipping:</span>
+                      <span>${order.shipping?.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.summaryRow + ' ' + styles.total}>
+                      <span><strong>Total:</strong></span>
+                      <span><strong>${order.total?.toFixed(2)}</strong></span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               {paymentInfo && paymentInfo.x_transaction_id && (
                 <div className={styles.paymentDetails}>
+                  <h3>Payment Details</h3>
                   <p><strong>Transaction ID:</strong> {paymentInfo.x_transaction_id}</p>
                   <p><strong>Reference:</strong> {paymentInfo.x_ref_payco}</p>
                   <p><strong>Amount:</strong> ${paymentInfo.x_amount}</p>
@@ -116,9 +167,16 @@ const PaymentResponse = () => {
                   )}
                 </div>
               )}
+              
               <div className={styles.buttonGroup}>
                 <button 
                   className={styles.primaryButton} 
+                  onClick={() => navigate('/orders')}
+                >
+                  View Orders
+                </button>
+                <button 
+                  className={styles.secondaryButton} 
                   onClick={() => navigate('/store')}
                 >
                   Continue Shopping
@@ -132,6 +190,36 @@ const PaymentResponse = () => {
               <div className={styles.pendingIcon}>⏱</div>
               <h2>Payment Pending</h2>
               <p>Your payment is being processed. We'll update you once it's complete.</p>
+              
+              {/* Show order items for pending payments too */}
+              {order && order.items && (
+                <div className={styles.orderItems}>
+                  <h3>Order Items</h3>
+                  <div className={styles.itemsList}>
+                    {order.items.map((item) => (
+                      <div key={item.id} className={styles.orderItem}>
+                        <div className={styles.itemImage}>
+                          <img 
+                            src={item.image || "/placeholder.svg"} 
+                            alt={item.name} 
+                            width={60} 
+                            height={60} 
+                          />
+                        </div>
+                        <div className={styles.itemDetails}>
+                          <h4>{item.name}</h4>
+                          <p className={styles.itemDescription}>{item.description}</p>
+                          <div className={styles.itemPricing}>
+                            <span className={styles.quantity}>Qty: {item.quantity}</span>
+                            <span className={styles.price}>${(item.price * item.quantity).toFixed(2)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               {paymentInfo && paymentInfo.x_ref_payco && (
                 <p><strong>Reference:</strong> {paymentInfo.x_ref_payco}</p>
               )}

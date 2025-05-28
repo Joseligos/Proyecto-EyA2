@@ -23,6 +23,7 @@ import Progreso from "../pages/Progreso/Progreso";
 import Chat from "../pages/Comunidad/Chat";
 import Tienda from "../pages/Tienda/Tienda";
 import Carrito from "../pages/Carrito/Carrito";
+import Orders from "../pages/Orders/Orders";
 
 const AppRoutes = () => {
   return (
@@ -95,6 +96,14 @@ const AppRoutes = () => {
             element={
               <PrivateRoute>
                 <Carrito />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <PrivateRoute>
+                <Orders />
               </PrivateRoute>
             }
           />

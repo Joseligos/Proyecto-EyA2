@@ -30,8 +30,9 @@ const Header = () => {
           <nav className={styles.nav}>
             <Link to="/">Home</Link>
             <Link to="/workouts">Workouts</Link>
-            <Link to="/cart">Cart</Link>
             <Link to="/store">Fitness Store</Link>
+            <Link to="/cart">Cart</Link>
+            <Link to="/orders">My Orders</Link>
             <Link to="/register" className={user ? styles.disabledLink : ""}>
               Join
             </Link>
